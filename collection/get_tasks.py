@@ -110,7 +110,7 @@ def main(
     print(f"Will save task instance data to {path_tasks}")
     print(f"Received following repos to create task instances for: {repos}")
 
-    tokens = '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,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,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,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'
+    tokens = ''
 
     tokens = tokens.split(",")
     data_task_lists = split_instances(repos, len(tokens))
