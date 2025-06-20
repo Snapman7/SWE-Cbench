@@ -292,20 +292,26 @@ def create_refactored_dataset(path_refactored: str, path_task: str):
     # Write to .all file for all PRs
     write_mode_all = "w" if not os.path.exists(all_output) else "a"
     with open(all_output, write_mode_all) as all_output:
-        for ix, line in enumerate(open(path_task)):
-            print(path_task)
-            total_instances += 1
-            pull = json.loads(line)
-            if ix % 100 == 0:
-                logger.info(
-                    f"(Up to {ix} checked) "
-                    f"{completed} valid, {with_tests} with tests."
-                )
-            if is_valid_pull(pull):
-                # If valid, write to .all output file
-                print(
-                    json.dumps(pull), end="\n", flush=True, file=all_output
-                )  # write all instances to a separate file
+        path_refactored1 = path_refactored
+        write_mode = "w" if not os.path.exists(path_refactored1) else "a"
+        with open(path_refactored1, write_mode) as path_refactored1:
+            for ix, line in enumerate(open(path_task)):
+                print(path_task)
+                total_instances += 1
+                pull = json.loads(line)
+                if ix % 100 == 0:
+                    logger.info(
+                        f"(Up to {ix} checked) "
+                        f"{completed} valid, {with_tests} with tests."
+                    )
+                if is_valid_pull(pull):
+                    # If valid, write to .all and .jsonl output file
+                    print(
+                        json.dumps(pull), end="\n", flush=True, file=all_output
+                    )  # write all instances to a separate file
+                    print(
+                        json.dumps(pull), end="\n", flush=True, file=path_refactored1
+                    )  # write all instances to a separate file
 
 
 def construct_data_files(data: dict):

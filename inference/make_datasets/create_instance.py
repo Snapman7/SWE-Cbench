@@ -8,7 +8,7 @@ from tempfile import TemporaryDirectory
 import unidiff
 from tqdm.auto import tqdm
 
-from tokenize_dataset import TOKENIZER_FUNCS
+from inference.make_datasets.tokenize_dataset import TOKENIZER_FUNCS
 from utils import (
     AutoContextManager,
     ingest_directory_contents,

@@ -1,6 +1,8 @@
 import json
 import os
 import time
+from argparse import ArgumentParser
+
 import dotenv
 import traceback
 from pathlib import Path
@@ -499,3 +501,58 @@ def main(
     else:
         raise ValueError(f"Invalid model name or path {model_name_or_path}")
     logger.info("Done!")
+
+
+if __name__ == "__main__":
+    parser = ArgumentParser(description=__doc__)
+    parser.add_argument(
+        "--dataset_name_or_path",
+        type=str,
+        required=True,
+        help="HuggingFace dataset name or local path",
+    )
+    parser.add_argument(
+        "--split",
+        type=str,
+        default="test",
+        help="Dataset split to use",
+    )
+    parser.add_argument(
+        "--model_name_or_path",
+        type=str,
+        help="Name of API model. Update MODEL* constants in this file to add new models.",
+        choices=sorted(list(MODEL_LIMITS.keys())),
+    )
+    parser.add_argument(
+        "--shard_id",
+        type=int,
+        default=None,
+        help="Shard id to process. If None, process all shards.",
+    )
+    parser.add_argument(
+        "--num_shards",
+        type=int,
+        default=None,
+        help="Number of shards. If None, process all shards.",
+    )
+    parser.add_argument(
+        "--output_dir",
+        type=str,
+        default=None,
+        required=True,
+        help="Path to the output file.",
+    )
+    parser.add_argument(
+        "--model_args",
+        type=str,
+        default=None,
+        help="List of model arguments separated by commas. (e.g. 'top_p=0.95,temperature=0.70')",
+    )
+    parser.add_argument(
+        "--max_cost",
+        type=float,
+        default=None,
+        help="Maximum cost to spend on inference.",
+    )
+    args = parser.parse_args()
+    main(**vars(args))
